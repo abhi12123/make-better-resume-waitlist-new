@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Make Better Resume</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    style="
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000000;
+      color: white;
+    "
+  >
+    <div style="max-width: 80vw">
+      <div class="card">
+        <h1 style="">
+          Make
+          <span
+            style="
+              background: linear-gradient(90deg, #7c7c7c, #ffffff);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            "
+            >Better</span
+          >
+          Resume
+        </h1>
+        <p>Generates Resumes for you by learning everything about you</p>
+        <form id="waitlist-form" class="form">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            required
+            class="input"
+          />
+          <button type="submit" class="button">Join Waitlist</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    const form = document.getElementById("waitlist-form");
+    const input = form.querySelector('input[type="email"]');
+    const button = form.querySelector("button");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = input.value.trim();
+      if (!email) return;
+
+      // loading state
+      button.innerText = "Joining...";
+      button.disabled = true;
+
+      setTimeout(() => {
+        // success state
+        button.innerText = "Joined ✓";
+        button.style.background = "#ffffff";
+
+        input.value = "";
+      }, 800);
+    });
+  </script>
+</html>

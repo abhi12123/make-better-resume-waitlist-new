@@ -1,1 +1,1 @@
-# Jolynx Waitlist
+# Make better resume waitlist page
