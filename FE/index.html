@@ -34,7 +34,10 @@
           >
           Resume
         </h1>
-        <p>Generates Resumes for you by learning everything about you</p>
+        <p>
+          We combine your experience with real-world hiring data to generate
+          high-impact resumes.
+        </p>
         <form id="waitlist-form" class="form">
           <input
             type="email"
@@ -52,23 +55,49 @@
     const input = form.querySelector('input[type="email"]');
     const button = form.querySelector("button");
 
-    form.addEventListener("submit", function (e) {
+    function resetUI() {
+      button.innerText = "Join Waitlist";
+      button.style.background = "";
+      button.style.color = "";
+      button.disabled = false;
+    }
+
+    input.addEventListener("input", resetUI);
+
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const email = input.value.trim();
       if (!email) return;
 
-      // loading state
       button.innerText = "Joining...";
       button.disabled = true;
 
-      setTimeout(() => {
-        // success state
-        button.innerText = "Joined ✓";
-        button.style.background = "#ffffff";
+      try {
+        const response = await fetch("http://localhost:8000/waitlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-        input.value = "";
-      }, 800);
+        const data = await response.json();
+
+        if (response.ok || data.error === "Email already exists") {
+          button.innerText = "Joined ✓";
+          button.style.background = "#ffffff";
+          button.style.color = "#000000";
+          input.value = "";
+        } else {
+          button.innerText = "Error: " + data.error;
+          button.style.background = "#ff6b6b";
+          button.style.color = "#ffffff";
+          button.disabled = false;
+        }
+      } catch (error) {
+        button.innerText = "Failed to join";
+        button.style.background = "#ff6b6b";
+        button.disabled = false;
+      }
     });
   </script>
 </html>
